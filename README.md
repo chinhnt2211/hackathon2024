@@ -9,3 +9,7 @@
 
 Trong project, mỗi folder sẽ tương ứng với các task lớn, tiến độ công việc sẽ được theo dõi trong trello:
 https://trello.com/b/Ha9MAErK/wehackathon-2024
+
+Để chi tiết phần việc từng task, vui lòng khi thực hiện ghi vào README.md của mỗi folder các đầu mục sau:
+- Tổng quan bước thực hiện
+- Mô tả từng bước
