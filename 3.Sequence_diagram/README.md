@@ -9,8 +9,8 @@ Chức năng: Migrate database psql on-prem của khách hàng về psql databas
 
 # Xác định các bước thực hiện
 - Khi khách hàng nhấn vào tab Migration, gọi APIGetDetailMigrate để xem status migrate
-  - Nếu Status là processing, hiển thị giao diện đang processing 
   - Nếu Status là Yes, hiển thị thông tin khách hàng đã migrate 
+  - Nếu Status là processing, hiển thị giao diện đang processing 
   - Nếu Status là No, hiển thị form cho khách hàng migrate 
     - Người dùng nhập các thông tin của database on-prem vào form 
     - Người dùng nhấn nút test connection
@@ -31,6 +31,17 @@ Chức năng: Migrate database psql on-prem của khách hàng về psql databas
 - DB: Lưu cluster id, trạng thái migrate, workflow_id, host, port, user, pass (Nếu đang process)
 - Backend crontab: Chạy 1 phút 1 lần kiểm tra workflow_id xem chạy xong chưa, nếu xong rồi thì cập nhật vào db
 - APIGetDetailMigrate: API truy vấn status migration của cluster_id
+
+# Table migration:
+- id (primaryKey)
+- cluster_id
+- host
+- port
+- username
+- password
+- status
+- workflow_id
+- migrate_at
 
 <!-- 
 # Vẽ diagram
