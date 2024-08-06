@@ -14,7 +14,7 @@ Chức năng: Migrate database psql on-prem của khách hàng về psql databas
   - Nếu Status là Yes, hiển thị thông tin khách hàng đã migrate 
 - Người dùng nhập các thông tin của database on-prem vào form
 - Người dùng nhấn nút test connection
-- Form thông tin gửi request đến APICheck, APICheck sẽ check kết nối, và kiểm tra xem database service hiện tại có dữ liệu hay không
+- Form thông tin gửi request đến APITestConnection, APITestConnection sẽ check kết nối, và kiểm tra xem database service hiện tại có dữ liệu hay không
   - Nếu check thành công, gửi lại thông báo cho khách hàng, mở button migration
   - Nếu check thất bại, gửi lại thông báo cho khách hàng
 - Sau khi khách hàng check thành công, khách hàng nhấn vào migration, gửi request migrate đến APICallAWX
@@ -26,7 +26,7 @@ Chức năng: Migrate database psql on-prem của khách hàng về psql databas
 # Xác định các đối tượng tham gia
 - User: Người dùng dịch vụ
 - Frontend: Nơi người dùng thao tác
-- APICheck: API check kết nối và kiểm tra db engine hiện tại có trống dữ liệu hay không
+- APITestConnection: API check kết nối và kiểm tra db engine hiện tại có trống dữ liệu hay không
 - APICallAWX: API được gọi khi khách hàng nhấn migration, gọi vào awx để thực hiện
 - DB: Lưu cluster id, trạng thái migrate, workflow_id, host, port, user, pass (Nếu đang process)
 - Backend crontab: Chạy 1 phút 1 lần kiểm tra workflow_id xem chạy xong chưa, nếu xong rồi thì cập nhật vào db
