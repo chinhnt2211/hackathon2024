@@ -1,0 +1,22 @@
+- name: Create .pgpass file
+  ansible.builtin.file:
+    path: /root/.pgpass
+    state: touch
+    mode: '0600'
+
+- name: Add credentials to .pgpass file
+  ansible.builtin.lineinfile:
+    path: /root/.pgpass
+    line: "{{ source_host }}:{{ source_port }}:*:{{ source_user }}:{{ source_pass }}"
+    create: yes
+    mode: '0600'
+
+- name: Dump database to file
+  command: pg_dumpall -h {{ source_host }} -U {{ source_user }} -w > /tmp/test.sql
+  environment:
+    PGPASSFILE: /root/.pgpass
+
+- name: Switch to postgres user and restore database
+  become_user: postgres
+  shell: |
+    psql -f /tmp/test.sql

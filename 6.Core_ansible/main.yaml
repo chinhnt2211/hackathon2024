@@ -1,0 +1,26 @@
+---
+- hosts: localhost
+  gather_facts: false
+  tasks:
+    - name: connect vpn
+      shell: |
+        while [ ! -f '/xplat-awx/data/{{ org_name }}/{{ vdc_name }}/{{ vdc_name }}.ovpn' ]; do sleep 1; done
+        /usr/sbin/openvpn --config '/xplat-awx/data/{{ org_name }}/{{ vdc_name }}/{{ vdc_name }}.ovpn' --script-security 3 --auth-nocache > /dev/null &
+        sleep 5
+
+
+    - name: wait database online
+      wait_for:
+          host: "{{ hostvars[item]['ansible_host'] }}"
+          port: 22
+      with_items:
+          - "{{ groups['nodes'] }}"
+
+- name: Migrate db
+  hosts: nodes
+  become: yes
+  vars_files:
+    - "group_vars/{{ lookup('env', 'ENV') }}"
+  gather_facts: yes
+  roles:
+    - name: migrate_db
