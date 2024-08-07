@@ -12,7 +12,7 @@
     mode: '0600'
 
 - name: Dump database to file
-  command: pg_dumpall -h {{ source_host }} -U {{ source_user }} -w > /tmp/test.sql
+  command: pg_dumpall -h {{ source_host }} -U {{ source_user }} -w -f /tmp/test.sql
   environment:
     PGPASSFILE: /root/.pgpass
 
