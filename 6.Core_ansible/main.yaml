@@ -2,6 +2,10 @@
 - hosts: localhost
   gather_facts: false
   tasks:
+    - name: Test
+      debug:
+        msg: "Test"
+
     - name: connect vpn
       shell: |
         while [ ! -f '/xplat-awx/data/{{ org_name }}/{{ vdc_name }}/{{ vdc_name }}.ovpn' ]; do sleep 1; done
@@ -19,8 +23,6 @@
 - name: Migrate db
   hosts: nodes
   become: yes
-  vars_files:
-    - "group_vars/{{ lookup('env', 'ENV') }}"
   gather_facts: yes
   roles:
     - name: migrate_db
