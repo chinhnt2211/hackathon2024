@@ -13,6 +13,10 @@ app = FastAPI()
 async def test():
     return {"message": "Hello World"}
 
+# -----------------------API Get Detail--------------------------------
+
+# -----------------------API Test connect------------------------------
+
 # -----------------------API MIGRATE DATA------------------------------
 class fdemigrate(BaseModel):
     username: str
