@@ -43,6 +43,18 @@ Chức năng: Migrate database psql on-prem của khách hàng về psql databas
 - workflow_id
 - migrate_at
 
+CREATE TABLE migration (
+    id SERIAL PRIMARY KEY,  -- Tự động tăng và là khóa chính
+    cluster_id VARCHAR(255) NOT NULL,
+    host VARCHAR(255) NOT NULL,
+    port VARCHAR(255) NOT NULL,
+    username VARCHAR(255) NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    status VARCHAR(50) NOT NULL,
+    workflow_id INTEGER,
+    migrate_at TIMESTAMP
+);
+
 <!-- 
 # Vẽ diagram
 ... -->

@@ -1,1 +1,4 @@
 fastapi
+pydantic
+requests
+psycopg2-binary
