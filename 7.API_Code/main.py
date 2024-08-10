@@ -137,7 +137,7 @@ async def migrate(item: fdemigrate):
                     }
                 }
     except OperationalError as e:
-        return HTTPException(status_code=500, detail="Can not connect to database")
+        raise  HTTPException(status_code=500, detail="Can not connect to database")
 
 @app.get("/migration/{cluster_id}")
 async def migrate(item: fdemigrate, cluster_id: str):
@@ -182,4 +182,4 @@ async def migrate(item: fdemigrate, cluster_id: str):
                 "data": result
                 }
     except OperationalError as e:
-        return HTTPException(status_code=500, detail="Can not connect to database")
+        raise  HTTPException(status_code=500, detail="Can not connect to database")
