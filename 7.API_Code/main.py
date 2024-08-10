@@ -1,8 +1,8 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException, status
 from pydantic import BaseModel
 import requests
 import psycopg2
-from psycopg2 import sql
+from psycopg2 import sql, OperationalError
 from datetime import datetime
 
 
@@ -115,3 +115,66 @@ async def migrate(item: fdemigrate):
                 "Successed": True
             }
             }
+
+@app.post("/migration/test")
+async def migrate(item: fdemigrate):
+    try:
+        #check if we can connect to db
+        _ = psycopg2.connect(
+            database="DBdefault",
+            user=item.username,
+            password=item.password,
+            host=item.host, 
+            port=item.port
+        )
+        return {
+                "message": "Success",
+                "data": {
+                    "Successed": True
+                    }
+                }
+    except OperationalError as e:
+        return HTTPException(status_code=500, detail="Can not connect to database")
+
+@app.get("/migration/{cluster_id}")
+async def migrate(item: fdemigrate, cluster_id: str):
+    try:
+        #create connection
+        connection = psycopg2.connect(
+            database="DBdefault",
+            user=item.username,
+            password=item.password,
+            host=item.host, 
+            port=item.port
+        )
+        #fetch data
+        cursor = connection.cursor()
+        
+        # Query to fetch status infomation
+        query = f"""
+        SELECT id, cluster_id, host, port, username, password, status, migrate_at
+        FROM migration
+        WHERE cluster_id = '{cluster_id}';
+        """
+        cursor.execute(query, (cluster_id,))
+        row = cursor.fetchone()
+        result = {
+                "status": "cluster id not found"
+                }
+        if row:
+            result = {
+                "id": row[0],
+                "cluster_id": row[1],
+                "host": row[2],
+                "port": row[3],
+                "username": row[4],
+                "password": row[5], 
+                "status": row[6],
+                "migrate_at": row[7]
+            }
+        return {
+                "message": "Success",
+                "data": result
+                }
+    except OperationalError as e:
+        return HTTPException(status_code=500, detail="Can not connect to database")
