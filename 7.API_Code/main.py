@@ -4,7 +4,7 @@ import requests
 import psycopg2
 from psycopg2 import sql, OperationalError
 from datetime import datetime
-
+from utils.check_empty_postgre_db import check_database
 
 app = FastAPI()
 
@@ -120,17 +120,20 @@ async def migrate(item: fdemigrate):
 async def migrate(item: fdemigrate):
     try:
         #check if we can connect to db
-        _ = psycopg2.connect(
+        connection = psycopg2.connect(
             database="DBdefault",
             user=item.username,
             password=item.password,
             host=item.host, 
             port=item.port
         )
+        isEmptyDb = not check_database(connection)
+        connection.close()
         return {
                 "message": "Success",
                 "data": {
-                    "Successed": True
+                    "Successed": True,
+                    "IsEmptyDB": isEmptyDb
                     }
                 }
     except OperationalError as e:
@@ -172,6 +175,8 @@ async def migrate(item: fdemigrate, cluster_id: str):
                 "status": row[6],
                 "migrate_at": row[7]
             }
+        cursor.close()
+        connection.close()
         return {
                 "message": "Success",
                 "data": result
