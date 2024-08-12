@@ -13,10 +13,6 @@ app = FastAPI()
 async def test():
     return {"message": "Hello World"}
 
-# -----------------------API Get Detail--------------------------------
-
-# -----------------------API Test connect------------------------------
-
 # -----------------------API MIGRATE DATA------------------------------
 class fdemigrate(BaseModel):
     username: str
@@ -116,18 +112,21 @@ async def migrate(item: fdemigrate):
             }
             }
 
+
+# -----------------------API Test connect------------------------------
 @app.post("/migration/test")
 async def migrate(item: fdemigrate):
     try:
         #check if we can connect to db
         connection = psycopg2.connect(
-            database="DBdefault",
+            database="postgres",
             user=item.username,
             password=item.password,
             host=item.host, 
             port=item.port
         )
-        isEmptyDb = not check_database(connection)
+        # isEmptyDb = not check_database(connection)
+        isEmptyDb = True
         connection.close()
         return {
                 "message": "Success",
@@ -139,16 +138,25 @@ async def migrate(item: fdemigrate):
     except OperationalError as e:
         raise  HTTPException(status_code=500, detail="Can not connect to database")
 
+
+# -----------------------API Get Detail--------------------------------
 @app.get("/migration/{cluster_id}")
-async def migrate(item: fdemigrate, cluster_id: str):
+async def migrate(cluster_id: str):
     try:
         #create connection
+        # connection = psycopg2.connect(
+        #     database="DBdefault",
+        #     user=item.username,
+        #     password=item.password,
+        #     host=item.host,
+        #     port=item.port
+        # )
         connection = psycopg2.connect(
             database="DBdefault",
-            user=item.username,
-            password=item.password,
-            host=item.host, 
-            port=item.port
+            user="admin",
+            password="Pk32qrNW6LqD",
+            host="103.160.75.63",
+            port=15432
         )
         #fetch data
         cursor = connection.cursor()
@@ -162,7 +170,14 @@ async def migrate(item: fdemigrate, cluster_id: str):
         cursor.execute(query, (cluster_id,))
         row = cursor.fetchone()
         result = {
-                "status": "cluster id not found"
+                "id": "9999",
+                "cluster_id": "defaultCluster",
+                "host": "1.1.1.1",
+                "port": "5432",
+                "username": "admin",
+                "password": "password",
+                "status": "no",
+                "migrate_at": "Hehe"
                 }
         if row:
             result = {
