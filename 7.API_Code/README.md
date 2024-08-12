@@ -13,3 +13,11 @@ port: 15432
 user: admin
 pass: Pk32qrNW6LqD
 database: DBdefault
+
+# Run
+```commandline
+python3 -m venv venv
+source venv/bin/activate
+pip install -r requirement.txt
+fastapi dev 7.API_Code/main.py
+```
