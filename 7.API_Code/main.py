@@ -5,18 +5,19 @@ import requests
 import psycopg2
 from psycopg2 import sql, OperationalError
 from datetime import datetime
-from utils.check_empty_postgre_db import check_database
 
 app = FastAPI()
 
-# Add CORS middleware
+# Thêm CORS middleware vào ứng dụng
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Allows all origins. You can restrict this to specific origins.
+    allow_origins=["*"],  # Hoặc bạn có thể chỉ định các domain cụ thể thay vì cho phép tất cả
     allow_credentials=True,
-    allow_methods=["*"],  # Allows all methods (GET, POST, etc.). You can restrict this to specific methods.
-    allow_headers=["*"],  # Allows all headers. You can restrict this to specific headers.
+    allow_methods=["*"],  # Bạn có thể giới hạn các method được phép, ví dụ: ["GET", "POST"]
+    allow_headers=["*"],  # Bạn có thể giới hạn các headers được phép
 )
+
+
 # -----------------------TEST------------------------------------
 @app.get("/")
 async def test():

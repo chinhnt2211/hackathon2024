@@ -23,10 +23,6 @@ python3 -m venv venv
 ```
 ```commandline
 source venv/bin/activate
-```
-```commandline
-pip install -r requirement.txt
-```
-```commandline
-fastapi dev main.py
+pip install -r 7.API_Code/requirement.txt
+fastapi dev 7.API_Code/main.py
 ```
