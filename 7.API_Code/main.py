@@ -1,12 +1,22 @@
 from fastapi import FastAPI, HTTPException, status
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 import requests
 import psycopg2
 from psycopg2 import sql, OperationalError
 from datetime import datetime
-from utils.check_empty_postgre_db import check_database
 
 app = FastAPI()
+
+# Thêm CORS middleware vào ứng dụng
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Hoặc bạn có thể chỉ định các domain cụ thể thay vì cho phép tất cả
+    allow_credentials=True,
+    allow_methods=["*"],  # Bạn có thể giới hạn các method được phép, ví dụ: ["GET", "POST"]
+    allow_headers=["*"],  # Bạn có thể giới hạn các headers được phép
+)
+
 
 # -----------------------TEST------------------------------------
 @app.get("/")
