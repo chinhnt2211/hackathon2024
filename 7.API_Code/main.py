@@ -1,4 +1,5 @@
 from fastapi import FastAPI, HTTPException, status
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 import requests
 import psycopg2
@@ -8,6 +9,14 @@ from utils.check_empty_postgre_db import check_database
 
 app = FastAPI()
 
+# Add CORS middleware
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Allows all origins. You can restrict this to specific origins.
+    allow_credentials=True,
+    allow_methods=["*"],  # Allows all methods (GET, POST, etc.). You can restrict this to specific methods.
+    allow_headers=["*"],  # Allows all headers. You can restrict this to specific headers.
+)
 # -----------------------TEST------------------------------------
 @app.get("/")
 async def test():
@@ -136,7 +145,12 @@ async def migrate(item: fdemigrate):
                     }
                 }
     except OperationalError as e:
-        raise  HTTPException(status_code=500, detail="Can not connect to database")
+        return {
+                "message": "Fail",
+                "data": {
+                    "Successed": False,
+                    }
+                }
 
 
 # -----------------------API Get Detail--------------------------------

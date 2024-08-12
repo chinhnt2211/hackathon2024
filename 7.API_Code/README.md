@@ -16,8 +16,17 @@ database: DBdefault
 
 # Run
 ```commandline
+cd 7.API_Code
+```
+```commandline
 python3 -m venv venv
+```
+```commandline
 source venv/bin/activate
+```
+```commandline
 pip install -r requirement.txt
-fastapi dev 7.API_Code/main.py
+```
+```commandline
+fastapi dev main.py
 ```
